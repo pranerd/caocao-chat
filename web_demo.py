@@ -291,6 +291,7 @@ if __name__ == '__main__':
     # download repo to the base_path directory using git
     os.system('apt install git')
     os.system('apt install git-lfs')
+    os.system('git lfs install')
     os.system(f'git clone https://code.openxlab.org.cn/pranerd/internlm2-chat-7b-caocao.git {base_path}')
     os.system(f'cd {base_path} && git lfs pull') 
     main()
