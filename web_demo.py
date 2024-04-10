@@ -238,10 +238,10 @@ def main():
     print('load model end.')
 
     user_avator = 'assets/user.png'
-    robot_avator = 'assets/robot.png'
+    robot_avator = 'assets/caocao_robot.png'
 
-    st.title('InternLM2-Chat-7B')
-
+    st.title('caocao-Chat-InternLM2-7B')
+    st.caption("🚀 A streamlit chatbot powered by InternLM2 QLora")
     generation_config = prepare_generation_config()
 
     # Initialize chat history
