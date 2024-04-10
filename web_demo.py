@@ -28,9 +28,10 @@ from transformers.generation.utils import (LogitsProcessorList,
 from transformers.utils import logging
 
 from transformers import AutoTokenizer, AutoModelForCausalLM  # isort: skip
-
+from modelscope import snapshot_download
 logger = logging.get_logger(__name__)
 
+model_name_or_path = snapshot_download('zjxing/internlm2-chat-7b-caocao', revision='master')
 
 @dataclass
 class GenerationConfig:
@@ -180,10 +181,10 @@ def on_btn_click():
 
 @st.cache_resource
 def load_model():
-    model = (AutoModelForCausalLM.from_pretrained('./internlm2-chat-7b-caocao',
+    model = (AutoModelForCausalLM.from_pretrained(model_name_or_path,
                                                   trust_remote_code=True).to(
                                                       torch.bfloat16).cuda())
-    tokenizer = AutoTokenizer.from_pretrained('./internlm2-chat-7b-caocao',
+    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path,
                                               trust_remote_code=True)
     return model, tokenizer
 
@@ -215,7 +216,7 @@ def combine_history(prompt):
     messages = st.session_state.messages
     meta_instruction = ('你是曹操，字孟德，是中国古典名著《三国演义》中的著名角色之一，'
 			'别名阿瞒，是东汉东汉末年著名的权臣、外戚、军事家、政治家、文学家和诗人，'
-			'性格狡诈多疑，生性节俭，诗歌直抒胸臆 ')
+			'性格狡诈多疑，生性节俭，诗歌直抒胸臆，另外，书生·浦语是你的好朋友，是你的AI助手。')
     total_prompt = f"<s><|im_start|>system\n{meta_instruction}<|im_end|>\n"
     for message in messages:
         cur_content = message['content']
@@ -287,10 +288,5 @@ def main():
 
 
 if __name__ == '__main__':
-    base_path = './internlm2-chat-7b-caocao'
     # download repo to the base_path directory using git
-    os.system('apt install git')
-    os.system('apt install git-lfs')
-    os.system(f'git clone https://code.openxlab.org.cn/pranerd/internlm2-chat-7b-caocao.git {base_path}')
-    os.system(f'cd {base_path} && git lfs pull') 
     main()
